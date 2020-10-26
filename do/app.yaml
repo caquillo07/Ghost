@@ -1,0 +1,37 @@
+databases:
+- cluster_name: ghost-mysql
+  db_name: ghost
+  db_user: ghost
+  engine: MYSQL
+  name: ghost-mysql
+  production: true
+  version: "8"
+name: ghost
+region: nyc
+services:
+- build_command: rm -rf core/client && git checkout -- core/client && ./node_modules/.bin/grunt prod --force
+  environment_slug: node-js
+  envs:
+  - key: database__client
+    scope: RUN_AND_BUILD_TIME
+    value: mysql
+  - key: database__connection__database
+    scope: RUN_AND_BUILD_TIME
+  - key: database__connection__port
+    scope: RUN_AND_BUILD_TIME
+  - key: database__connection__user
+    scope: RUN_AND_BUILD_TIME
+  - key: database__connection__host
+    scope: RUN_AND_BUILD_TIME
+  - key: database__connection__password
+    scope: RUN_AND_BUILD_TIME
+  github:
+    branch: master
+    repo: caquillo07/Ghost
+  http_port: 2368
+  instance_count: 1
+  instance_size_slug: professional-xs
+  name: ghost
+  routes:
+  - path: /
+  run_command: yarn start
